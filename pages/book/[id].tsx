@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 const BookPage: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { title, author, genre, description, isbn, publishedDate, publisher } =
+  const { title, author, genre, description, isbn, published, publisher } =
     router.query;
 
   if (
@@ -14,7 +14,7 @@ const BookPage: React.FC = () => {
     !genre ||
     !description ||
     !isbn ||
-    !publishedDate ||
+    !published ||
     !publisher
   ) {
     return <div>Loading...</div>;
@@ -27,7 +27,7 @@ const BookPage: React.FC = () => {
       <p>Genre: {genre}</p>
       <p>Description: {description}</p>
       <p>ISBN: {isbn}</p>
-      <p>Published Date: {publishedDate}</p>
+      <p>Published Date: {published}</p>
       <p>Publisher: {publisher}</p>
     </div>
   );

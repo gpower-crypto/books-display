@@ -9,13 +9,26 @@ interface Book {
   genre: string;
   description: string;
   isbn: string;
-  publishedDate: string;
+  published: string;
   publisher: string;
 }
 
 interface BooksProps {
   books: Book[];
 }
+
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  // Pad single digit day and month with leading zero
+  const formattedDay = day < 10 ? `0${day}` : day;
+  const formattedMonth = month < 10 ? `0${month}` : month;
+
+  return `${formattedDay}/${formattedMonth}/${year}`;
+};
 
 const BooksPage: React.FC<BooksProps> = ({ books }) => {
   return (
@@ -35,8 +48,8 @@ const BooksPage: React.FC<BooksProps> = ({ books }) => {
                 book.description
               )}&isbn=${encodeURIComponent(
                 book.isbn
-              )}&publishedDate=${encodeURIComponent(
-                book.publishedDate
+              )}&published=${encodeURIComponent(
+                formatDate(book.published)
               )}&publisher=${encodeURIComponent(book.publisher)}`}
             >
               <a>
@@ -47,7 +60,7 @@ const BooksPage: React.FC<BooksProps> = ({ books }) => {
             <p>Genre: {book.genre}</p>
             <p>Description: {book.description}</p>
             <p>ISBN: {book.isbn}</p>
-            <p>Published Date: {book.publishedDate}</p>
+            <p>Published Date: {formatDate(book.published)}</p>
             <p>Publisher: {book.publisher}</p>
           </li>
         ))}
@@ -57,7 +70,6 @@ const BooksPage: React.FC<BooksProps> = ({ books }) => {
 };
 
 export const getServerSideProps: GetServerSideProps<BooksProps> = async () => {
-  // Fetch books from API (replace ...xyz with your actual API endpoint)
   const res = await fetch("https://fakerapi.it/api/v1/books");
   const data = await res.json();
 
